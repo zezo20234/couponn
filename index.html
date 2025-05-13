@@ -27,7 +27,7 @@
       const index = validCodes.indexOf(input);
 
       if (index !== -1) {
-        document.getElementById("message").textContent = "Code accepted!";
+        document.getElementById("message").textContent = "Code accepted! -5 days";
         validCodes.splice(index, 1); // remove the used code
       } else {
         document.getElementById("message").textContent = "Invalid or already used code.";
