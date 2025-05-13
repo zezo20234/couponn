@@ -1,72 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Coupon Redemption</title>
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-  <script>
-    (function(){
-      emailjs.init("YOUR_USER_ID"); // Replace with your EmailJS User ID
-    })();
-  </script>
-  <style>
-    body { font-family: Arial; padding: 20px; max-width: 400px; margin: auto; }
-    input { display: block; margin-bottom: 10px; padding: 10px; width: 100%; }
-    button { padding: 10px; width: 100%; }
-    .message { margin-top: 15px; color: green; }
-    .error { color: red; }
-  </style>
+  <title>One-Time Code Form</title>
 </head>
 <body>
-
-  <h2>Redeem Your Coupon</h2>
-
-  <input type="text" id="name" placeholder="Your Name" required>
-  <input type="text" id="coupon" placeholder="Enter Coupon Code" required>
-  <button onclick="redeemCoupon()">Submit</button>
-
-  <div id="response" class="message"></div>
+  <h2>Enter Your One-Time Code</h2>
+  <form id="codeForm">
+    <input type="text" id="codeInput" placeholder="Enter code" required>
+    <button type="submit">Submit</button>
+  </form>
+  <p id="message"></p>
 
   <script>
-    const validCode = "ABC123";  // Your chosen one-time code
-    let used = false;
+    // Simulated list of one-time codes
+    const validCodes = ["ABC123", "XYZ789", "CODE2025"];
 
-    function redeemCoupon() {
-      const name = document.getElementById("name").value.trim();
-      const coupon = document.getElementById("coupon").value.trim();
-      const response = document.getElementById("response");
+    document.getElementById("codeForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const input = document.getElementById("codeInput").value.trim();
+      const index = validCodes.indexOf(input);
 
-      if (!name || !coupon) {
-        response.textContent = "Please fill out both fields.";
-        response.className = "error";
-        return;
-      }
-
-      if (used) {
-        response.textContent = "This coupon has already been used.";
-        response.className = "error";
-        return;
-      }
-
-      if (coupon === validCode) {
-        used = true;
-        response.textContent = Thank you, ${name}! Your code is accepted.;
-        response.className = "message";
-
-        // Send email with EmailJS
-        emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
-          user_name: name,
-          user_email: "zezo_z4ever@outlook.com"
-        }).then(function() {
-          console.log("Email sent successfully.");
-        }, function(error) {
-          console.error("Email sending failed:", error);
-        });
-
+      if (index !== -1) {
+        document.getElementById("message").textContent = "Code accepted!";
+        validCodes.splice(index, 1); // remove the used code
       } else {
-        response.textContent = "Invalid coupon code.";
-        response.className = "error";
+        document.getElementById("message").textContent = "Invalid or already used code.";
       }
-    }
+    });
   </script>
 </body>
 </html>
