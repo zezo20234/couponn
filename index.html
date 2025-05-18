@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>One-Time Code Form</title>
+  <title>One-Time Code Form & Website Age</title>
 </head>
 <body>
   <h2>Enter Your One-Time Code</h2>
@@ -11,68 +11,48 @@
   </form>
   <p id="message"></p>
 
-  <script>
-    // Simulated list of one-time codes
-    const validCodes = ["AB12","CD34","EF56","GH78","IJ90",
-"KL12","MN34","OP56","QR78","ST90",
-"UV12","WX34","YZ56","AC78","BD90",
-"CE12","DF34","EG56","FH78","GI90",
-"HJ12","IK34","JL56","KM78","LN90",
-"MO12","NP34","OQ56","PR78","QS90",
-"RT12","SU34","TV56","UW78","VX90",
-"WY12","XZ34","ZA56","AB78","BC90",
-"CD12","DE34","EF56","FG78","GH90",
-"HI12","IJ34","JK56","KL78","LM90",
-"MN12","NO34","OP56","PQ78","QR90",
-"RS12","ST34","UV56","WX78","YZ90",
-"AC12","BD34","CE56","DF78","EG90",
-"FH12","GI34","HJ56","IK78","JL90",
-"KM12","LN34","MO56","NP78","OQ90",
-"PR12","QS34","RT56","SU78","TV90",
-"UW12","VX34","WY56","XZ78","ZA90",
-"AB12","BC34","CD56","DE78","EF90",
-"FG12","GH34","HI56","IJ78","JK90",
-"LM12","MN34","NO56","OP78","QR90"
-]
+  <h2>Website Age</h2>
+  <p>This website is <span id="days-old"></span> days old.</p>
 
+  <script>
+    // Valid one-time codes
+    const validCodes = [
+      "AB12","CD34","EF56","GH78","IJ90","KL12","MN34","OP56","QR78","ST90",
+      "UV12","WX34","YZ56","AC78","BD90","CE12","DF34","EG56","FH78","GI90",
+      "HJ12","IK34","JL56","KM78","LN90","MO12","NP34","OQ56","PR78","QS90",
+      "RT12","SU34","TV56","UW78","VX90","WY12","XZ34","ZA56","AB78","BC90",
+      "CD12","DE34","FG78","GH90","HI12","IJ34","JK56","KL78","LM90","MN12",
+      "NO34","PQ78","QR90","RS12","ST34","UV56","WX78","YZ90","AC12","BD34",
+      "CE56","DF78","EG90","FH12","GI34","HJ56","IK78","JL90","KM12","LN34",
+      "MO56","NP78","OQ90","PR12","QS34","RT56","SU78","TV90","UW12","VX34",
+      "WY56","XZ78","ZA90","BC34","CD56","DE78","EF90","FG12","GH34","HI56",
+      "IJ78","JK90","LM12","NO56","OP78","QR90"
+    ];
+
+    // Retrieve used codes from localStorage or initialize as empty
+    let usedCodes = JSON.parse(localStorage.getItem("usedCodes")) || [];
 
     document.getElementById("codeForm").addEventListener("submit", function(e) {
       e.preventDefault();
       const input = document.getElementById("codeInput").value.trim();
-      const index = validCodes.indexOf(input);
 
-      if (index !== -1) {
-        document.getElementById("message").textContent = "Code accepted! -5 days";
-        validCodes.splice(index, 1); // remove the used code
+      if (!validCodes.includes(input)) {
+        document.getElementById("message").textContent = "Invalid code.";
+      } else if (usedCodes.includes(input)) {
+        document.getElementById("message").textContent = "This code has already been used.";
       } else {
-        document.getElementById("message").textContent = "Invalid or already used code.";
+        document.getElementById("message").textContent = "Code accepted! -5 days";
+        usedCodes.push(input);
+        localStorage.setItem("usedCodes", JSON.stringify(usedCodes));
       }
     });
-  </script>
-  <!DOCTYPE html>
-<html>
-<head>
-  <title>Website Age</title>
-</head>
-<body>
-  <p>This website is <span id="days-old"></span> days old.</p>
 
-  <script>
-    // Website launch date: May 13, 2025
-    const launchDate = new Date(2025, 4, 13); // Month is 0-based (4 = May)
+    // Website age calculation
+    const launchDate = new Date(2025, 4, 13); // May 13, 2025
     const today = new Date();
-
-    // Difference in milliseconds
     const diffTime = today - launchDate;
-
-    // Convert to full days
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-
-    // Show result
     document.getElementById('days-old').textContent = diffDays;
   </script>
-</body>
-</html>
-
 </body>
 </html>
